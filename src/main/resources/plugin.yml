@@ -1,0 +1,13 @@
+name: PerPlayerChatFilter
+main: net.cazzar.bukkit.perplayerchatfilter.PerPlayerChatFilter
+version: '1.0.0'
+author: cazzar
+description: 'Filter the chat per player!'
+depend: [ProtocolLib]
+commands:
+    filterme:
+        description: 'Toggle the censor system'
+        usage: '/filterme'
+    filter:
+            description: 'Add or remove a filter word'
+            usage: '/filter [add|remove] [word]'
