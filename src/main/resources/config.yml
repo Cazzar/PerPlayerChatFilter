@@ -1,2 +1,3 @@
-defaultCensorList: []
-players: {}
+censor:
+  players: []
+  words: []

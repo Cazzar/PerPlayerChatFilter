@@ -6,8 +6,5 @@ description: 'Filter the chat per player!'
 depend: [ProtocolLib]
 commands:
     filterme:
-        description: 'Toggle the censor system'
-        usage: '/filterme'
-    filter:
-            description: 'Add or remove a filter word'
-            usage: '/filter [add|remove] [word]'
+        description: 'control the censor system'
+        usage: '/filterme <add|remove> <word...>'
