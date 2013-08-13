@@ -5,10 +5,11 @@ import com.google.common.collect.Maps;
 import net.cazzar.bukkit.perplayerchatfilter.PerPlayerChatFilter;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,29 +17,7 @@ public class Configuration {
     public Map<String, PlayerConfiguration> players = Maps.newHashMap();
     public List<String> defaultCensorList = Lists.newArrayList();
 
-    public static Configuration config;
-
-    static {
-
-        try {
-            PerPlayerChatFilter instance = PerPlayerChatFilter.getInstance();
-
-            File configFile = new File(instance.getDataFolder(), "config.yml");
-            if (!configFile.exists()) {
-                config = new Configuration();
-                config.save();
-            }
-
-            Representer representer = new Representer();
-            representer.addClassTag(Configuration.class, Tag.YAML);
-            Yaml yaml = new Yaml(new Constructor(Configuration.class), representer);
-
-            config = (Configuration) yaml.load(new FileInputStream(configFile));
-        } catch (FileNotFoundException ignored) {
-        }
-    }
-
-    private Configuration() {
+    public Configuration() {
     }
 
     public void save() {
@@ -46,7 +25,9 @@ public class Configuration {
             FileWriter fw = null;
             PerPlayerChatFilter instance = PerPlayerChatFilter.getInstance();
             File configFile = new File(instance.getDataFolder(), "config.yml");
+            if (!instance.getDataFolder().exists()) instance.getDataFolder().mkdirs();
             try {
+                if (!configFile.exists()) configFile.createNewFile();
                 fw = new FileWriter(configFile);
                 Yaml yaml = new Yaml(new Constructor(Configuration.class), new Representer());
 

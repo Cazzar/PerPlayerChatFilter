@@ -1,27 +1,56 @@
 package net.cazzar.bukkit.perplayerchatfilter.configuration;
 
-import java.util.List;
+import com.google.common.collect.Maps;
+import net.cazzar.bukkit.perplayerchatfilter.PerPlayerChatFilter;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-public class PlayerConfiguration {
-    public List<String> censoredWords = Configuration.config.defaultCensorList;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+
+public class PlayerConfiguration implements ConfigurationSerializable {
+    public List<String> censoredWords = PerPlayerChatFilter.getInstance().censorWords;
     public boolean enabled = true;
 
     public PlayerConfiguration() {
     }
 
-    public List<String> getCensoredWords() {
-        return censoredWords;
+    public PlayerConfiguration(Map<String, Object> dataMap) {
+        try {
+            for (Field f : getClass().getDeclaredFields()) {
+                //data.put(f.getName(), f.get(this));
+                if (dataMap.containsKey(f.getName()))
+                    f.set(this, dataMap.get(f.getName()));
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void setCensoredWords(List<String> censoredWords) {
-        this.censoredWords = censoredWords;
+    /**
+     * Creates a Map representation of this class.
+     * <p/>
+     * This class must provide a method to restore this class, as defined in the {@link
+     * org.bukkit.configuration.serialization.ConfigurationSerializable} interface javadocs.
+     *
+     * @return Map containing the current state of this class
+     */
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> data = Maps.newHashMap();
+        try {
+            for (Field f : getClass().getDeclaredFields()) {
+                data.put(f.getName(), f.get(this));
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        return data;
     }
 
-    public boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    @Override
+    public String toString() {
+        return String.format("censoredWords: %s, enabled: %s", censoredWords, enabled);
     }
 }
