@@ -36,6 +36,7 @@ import java.util.Map;
 public class PerPlayerChatFilter extends JavaPlugin {
     public List<String> censorWords;
     private Map<String, PlayerConfiguration> players = Maps.newHashMap();
+    private boolean enabledByDefault = false;
     private static PerPlayerChatFilter instance;
 
     public static PerPlayerChatFilter getInstance() {
@@ -51,7 +52,7 @@ public class PerPlayerChatFilter extends JavaPlugin {
         ConfigurationSerialization.registerClass(PlayerConfiguration.class, "PlayerConfig");
         //noinspection unchecked
         censorWords = (List<String>) getConfig().getList("censor.words");
-
+        enabledByDefault = getConfig().getBoolean("defaults.enabledOnFirstJoin");
         ConfigurationSection section = getConfig().getConfigurationSection("censor.players");
         if (section != null) {
             Map<String, Object> playersTmp = getConfig().getConfigurationSection("censor.players").getValues(false);
@@ -124,5 +125,9 @@ public class PerPlayerChatFilter extends JavaPlugin {
 
         censorWords.remove(word.toLowerCase());
         return true;
+    }
+
+    public boolean getEnabledByDefault() {
+        return enabledByDefault;
     }
 }

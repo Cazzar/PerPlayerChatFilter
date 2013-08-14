@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class PlayerConfiguration implements ConfigurationSerializable {
     public List<String> censoredWords = PerPlayerChatFilter.getInstance().censorWords;
-    public boolean enabled = true;
+    public boolean enabled = PerPlayerChatFilter.getInstance().getEnabledByDefault();
 
     public PlayerConfiguration() {
     }

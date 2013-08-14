@@ -1,3 +1,5 @@
+defaults:
+  enabledOnFirstJoin: true
 censor:
   players: []
   words: []
