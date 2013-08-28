@@ -27,14 +27,14 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("UnusedDeclaration")
 public class PlayerConfiguration implements ConfigurationSerializable {
-    public List<String> censoredWords = PerPlayerChatFilter.getInstance().censorWords;
+    public List<String> censoredWords = Lists.newArrayList(PerPlayerChatFilter.getInstance().censorWords);
     public boolean enabled = PerPlayerChatFilter.getInstance().getEnabledByDefault();
 
     public PlayerConfiguration() {
     }
 
-    @SuppressWarnings("UnusedDeclaration")
     public PlayerConfiguration(Map<String, Object> dataMap) {
         try {
             for (Field f : getClass().getDeclaredFields()) {
@@ -97,5 +97,13 @@ public class PlayerConfiguration implements ConfigurationSerializable {
 
         censoredWords.remove(word.toLowerCase());
         return true;
+    }
+
+    public static PlayerConfiguration valueOf(Map<String, Object> map) {
+        return new PlayerConfiguration(map);
+    }
+
+    public static PlayerConfiguration deserialize(Map<String, Object> map) {
+        return new PlayerConfiguration(map);
     }
 }
